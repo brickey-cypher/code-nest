@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'dart:convert';
 import 'package:crypto/crypto.dart';
 import 'package:provider/provider.dart';
+
 import '../providers/totp_provider.dart';
+import '../services/pin_storage.dart'; // ✅ our abstraction
 
 class PinLockScreen extends StatefulWidget {
   const PinLockScreen({super.key});
@@ -14,13 +15,13 @@ class PinLockScreen extends StatefulWidget {
 
 class _PinLockScreenState extends State<PinLockScreen> {
   final TextEditingController _pinController = TextEditingController();
-  final _storage = const FlutterSecureStorage();
+  final PinStorage _pinStorage = getPinStorage(); // ✅ use abstraction
 
   String? _errorMessage;
   bool _isChecking = false;
 
   Future<bool> _validatePin(String inputPin) async {
-    final savedHash = await _storage.read(key: 'auth_pin');
+    final savedHash = await _pinStorage.readPin();
     if (savedHash == null) return false;
 
     final inputHash = sha256.convert(utf8.encode(inputPin)).toString();
@@ -83,13 +84,11 @@ class _PinLockScreenState extends State<PinLockScreen> {
     );
 
     if (confirmed == true) {
-      // Clear PIN and accounts
-      await _storage.delete(key: 'auth_pin');
-      await provider.clearAllAccounts();
+      await _pinStorage.clearPin();          // ✅ clears PIN
+      await provider.clearAllAccounts();     // ✅ clears accounts
 
       if (!mounted) return;
 
-      // Navigate to PIN setup screen fresh
       Navigator.pushReplacementNamed(context, '/setup');
     }
   }

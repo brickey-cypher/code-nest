@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'dart:convert';
 import 'package:crypto/crypto.dart';
+
+import '../services/pin_storage.dart'; // ✅ We actually use this now
 
 class PinSetupScreen extends StatefulWidget {
   const PinSetupScreen({super.key});
@@ -13,7 +14,7 @@ class PinSetupScreen extends StatefulWidget {
 class _PinSetupScreenState extends State<PinSetupScreen> {
   final TextEditingController _pinController = TextEditingController();
   final TextEditingController _confirmController = TextEditingController();
-  final _storage = const FlutterSecureStorage();
+  final PinStorage _pinStorage = getPinStorage(); // ✅ Use abstraction
 
   String? _errorMessage;
   bool _isSaving = false;
@@ -22,19 +23,19 @@ class _PinSetupScreenState extends State<PinSetupScreen> {
     final bytes = utf8.encode(pin);
     final hashedPin = sha256.convert(bytes).toString();
 
-    await _storage.write(key: 'auth_pin', value: hashedPin);
+    await _pinStorage.writePin(hashedPin); // ✅ Use our platform-aware storage
   }
 
   void _onSubmit() async {
     final pin = _pinController.text.trim();
     final confirmPin = _confirmController.text.trim();
 
-   if (pin.length < 4 || pin.length > 6) {
-  setState(() {
-    _errorMessage = 'PIN must be between 4 and 6 digits.';
-  });
-  return;
-}
+    if (pin.length < 4 || pin.length > 6) {
+      setState(() {
+        _errorMessage = 'PIN must be between 4 and 6 digits.';
+      });
+      return;
+    }
 
     if (pin != confirmPin) {
       setState(() {
@@ -51,7 +52,7 @@ class _PinSetupScreenState extends State<PinSetupScreen> {
     await _savePin(pin);
 
     if (!mounted) return;
-    Navigator.pushReplacementNamed(context, '/totp'); // Adjust route if needed
+    Navigator.pushReplacementNamed(context, '/totp');
   }
 
   @override
@@ -64,7 +65,7 @@ class _PinSetupScreenState extends State<PinSetupScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Text(
-              'Create a 4-digit PIN to secure your TOTP codes.',
+              'Create a 4–6 digit PIN to secure your TOTP codes.',
               style: TextStyle(fontSize: 16),
               textAlign: TextAlign.center,
             ),
@@ -75,7 +76,7 @@ class _PinSetupScreenState extends State<PinSetupScreen> {
               keyboardType: TextInputType.number,
               maxLength: 6,
               decoration: const InputDecoration(labelText: 'Enter PIN'),
-               onSubmitted: (_) => _onSubmit(),
+              onSubmitted: (_) => _onSubmit(),
             ),
             TextField(
               controller: _confirmController,

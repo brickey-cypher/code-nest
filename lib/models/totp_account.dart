@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class TotpAccount {
   final String issuer;
   final String accountName;
@@ -29,5 +31,15 @@ class TotpAccount {
 
   @override
   String toString() => 'TotpAccount(issuer: $issuer, accountName: $accountName)';
-}
 
+  // NEW: List conversion helpers
+  static List<TotpAccount> listFromJson(String jsonString) {
+    final data = json.decode(jsonString) as List<dynamic>;
+    return data.map((e) => TotpAccount.fromJson(e)).toList();
+  }
+
+  static String listToJson(List<TotpAccount> accounts) {
+    final data = accounts.map((e) => e.toJson()).toList();
+    return json.encode(data);
+  }
+}

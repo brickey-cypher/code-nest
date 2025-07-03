@@ -18,10 +18,8 @@ migrate_working_dir/
 *.iws
 .idea/
 
-# The .vscode folder contains launch configuration and tasks you configure in
-# VS Code which you may wish to be included in version control, so this line
-# is commented out by default.
-#.vscode/
+# VSCode config folder (uncomment if you want to ignore it)
+# .vscode/
 
 # Flutter/Dart/Pub related
 **/doc/api/
@@ -33,13 +31,47 @@ migrate_working_dir/
 .pub/
 /build/
 
-# Symbolication related
+# Symbolication and obfuscation
 app.*.symbols
-
-# Obfuscation related
 app.*.map.json
 
-# Android Studio will place build artifacts here
+# Android Studio build outputs
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Local Netlify folder
+.netlify/
+
+# Platform-specific local config and ephemeral files
+/android/app/google-services.json          # Firebase Android config (often contains secrets)
+/ios/Flutter/ephemeral/
+ios/Runner/GeneratedPluginRegistrant.*
+macos/Flutter/ephemeral/
+linux/flutter/ephemeral/
+windows/flutter/generated_plugin_registrant.cc
+windows/flutter/generated_plugins.cmake
+
+# Xcode & macOS artifacts
+*.xcworkspace
+*.xcconfig
+*.xcodeproj/project.xcworkspace/
+*.xcodeproj/xcuserdata/
+*.xcuserstate
+
+# Node/npm related
+node_modules/
+package-lock.json
+
+# Editor backups and temp files
+*~
+*.bak
+*.orig
+*.tmp
+
+# Coverage
+coverage/
+
+# Logs
+*.log
+

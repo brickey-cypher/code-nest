@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "101599613786",
+    "project_id": "codenestauthapp",
+    "storage_bucket": "codenestauthapp.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:101599613786:android:2fdbe088669fdc4ff21963",
+        "android_client_info": {
+          "package_name": "com.example.auth_totp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "101599613786-9ek0o7uk3mpgo966d8rrqtfbrpl25o3d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD4J-RNeDV_CPidbhgnRxWgEcuTg2Y8hyI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "101599613786-9ek0o7uk3mpgo966d8rrqtfbrpl25o3d.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
