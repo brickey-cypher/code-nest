@@ -20,7 +20,7 @@ appBar: AppBar(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         ColorFiltered(
-          colorFilter: ColorFilter.mode(Colors.black, BlendMode.srcIn),
+          colorFilter: const ColorFilter.mode(Colors.black, BlendMode.srcIn),
           child: Image.asset(
             'assets/icons/icon.png',
             width: 72,

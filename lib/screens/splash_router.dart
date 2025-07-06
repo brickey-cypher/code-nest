@@ -19,7 +19,11 @@ class _SplashRouterState extends State<SplashRouter> {
   @override
   void initState() {
     super.initState();
-    _initRouting();
+
+    // Schedule routing after first frame
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _initRouting();
+    });
   }
 
   Future<void> _initRouting() async {
@@ -48,4 +52,3 @@ class _SplashRouterState extends State<SplashRouter> {
     );
   }
 }
-

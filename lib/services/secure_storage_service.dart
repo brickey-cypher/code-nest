@@ -10,11 +10,15 @@ class SecureStorageService {
 
   /// Save the list of TOTP accounts securely
   Future<void> saveAccounts(List<TotpAccount> accounts) async {
-    final accountMaps = accounts.map((a) => {
-          'issuer': a.issuer,
-          'accountName': a.accountName,
-          'secret': a.secret,
-        }).toList();
+    final accountMaps = accounts
+        .map(
+          (a) => {
+            'issuer': a.issuer,
+            'accountName': a.accountName,
+            'secret': a.secret,
+          },
+        )
+        .toList();
 
     final jsonString = jsonEncode(accountMaps);
     await _storage.write(key: _storageKey, value: jsonString);
@@ -27,16 +31,19 @@ class SecureStorageService {
 
     final List<dynamic> accountMaps = jsonDecode(jsonString);
     return accountMaps
-        .map((map) => TotpAccount(
-              issuer: map['issuer'],
-              accountName: map['accountName'],
-              secret: map['secret'],
-            ))
+        .map(
+          (map) => TotpAccount(
+            issuer: map['issuer'],
+            accountName: map['accountName'],
+            secret: map['secret'],
+          ),
+        )
         .toList();
   }
 
-Future<void> clearAllAccounts() async {
-  await _storage.delete(key: _storageKey); // _storageKey should match your account storage key
+  Future<void> clearAllAccounts() async {
+    await _storage.delete(
+      key: _storageKey,
+    ); // _storageKey should match your account storage key
+  }
 }
-}
-

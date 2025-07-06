@@ -32,9 +32,9 @@ class _SignInScreenState extends State<SignInScreen> {
       Navigator.pushReplacementNamed(context, '/lock');
     } catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Google sign-in failed: $e')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Google sign-in failed: $e')));
     } finally {
       if (mounted) setState(() => _isLoading = false);
     }
@@ -50,9 +50,9 @@ class _SignInScreenState extends State<SignInScreen> {
       Navigator.pushReplacementNamed(context, '/lock');
     } catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('GitHub sign-in failed: $e')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('GitHub sign-in failed: $e')));
     } finally {
       if (mounted) setState(() => _isLoading = false);
     }
@@ -72,12 +72,34 @@ class _SignInScreenState extends State<SignInScreen> {
                     onPressed: _signInWithGoogle,
                     icon: const Icon(Icons.login),
                     label: const Text('Sign in with Google'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blue, // Google color
+                      foregroundColor: Colors.white, // Text color
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 12,
+                        horizontal: 20,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
                   ),
                   const SizedBox(height: 20),
                   ElevatedButton.icon(
                     onPressed: _signInWithGitHub,
                     icon: const Icon(Icons.code),
                     label: const Text('Sign in with GitHub'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.black, // GitHub color
+                      foregroundColor: Colors.white, // Text color
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 12,
+                        horizontal: 20,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
                   ),
                 ],
               ),

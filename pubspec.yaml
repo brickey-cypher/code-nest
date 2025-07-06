@@ -1,10 +1,8 @@
 name: codenest
 description: "A new Flutter project."
 
-# Prevent accidental publishing to pub.dev
 publish_to: 'none'
 
-# Versioning
 version: 1.0.0+1
 
 environment:
@@ -14,25 +12,25 @@ dependencies:
   flutter:
     sdk: flutter
 
-  # iOS-style icons
   cupertino_icons: ^1.0.8
 
   # TOTP and state management
   crypto: ^3.0.0
-  provider: ^6.0.0
+  provider: ^6.1.2
   flutter_secure_storage: ^9.0.0
 
   # App icon generation
   flutter_launcher_icons: ^0.13.1
-# Firebase dependencies
-  firebase_core: ^2.0.0
-  firebase_auth: ^4.0.0
+
+  # Firebase dependencies
+  firebase_core: ^2.27.0
+  firebase_auth: ^4.18.0
   google_sign_in: ^6.2.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^6.0.0
+  flutter_lints: ^3.0.0
 
 flutter_icons:
   android: true
@@ -46,14 +44,14 @@ flutter:
   assets:
     - assets/icons/icon.png
     - assets/images/
-  fonts:
-  - family: NotoSans
-    fonts:
-      - asset: "assets/fonts/NotoSans-VariableFont_wdth,wght.ttf"
-      - asset: "assets/fonts/NotoSans-Italic-VariableFont_wdth,wght.ttf"
-      - asset: "assets/fonts/NotoSans-Light.ttf"
-  - family: NotoSansMono
-    fonts:
-      - asset: "assets/fonts/NotoSansMono-VariableFont_wdth,wght.ttf"
-        style: italic
 
+  fonts:
+    - family: NotoSans
+      fonts:
+        - asset: "assets/fonts/NotoSans-VariableFont_wdth,wght.ttf"
+        - asset: "assets/fonts/NotoSans-Italic-VariableFont_wdth,wght.ttf"
+        - asset: "assets/fonts/NotoSans-Light.ttf"
+    - family: NotoSansMono
+      fonts:
+        - asset: "assets/fonts/NotoSansMono-VariableFont_wdth,wght.ttf"
+          style: italic

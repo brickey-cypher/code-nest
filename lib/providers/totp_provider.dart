@@ -3,15 +3,14 @@ import 'package:flutter/material.dart';
 import '../models/totp_account.dart';
 import '../logic/totp_generator.dart';
 import '../utils/base32_decoder.dart';
-import '../services/pin_storage.dart';  // <- change here: use pin_storage abstraction
+import '../services/secure_storage_service.dart';
 
 class TotpProvider extends ChangeNotifier {
   final List<TotpAccount> _accounts = [];
   final Map<String, String> _currentCodes = {};
   final Map<String, TOTPGenerator> _generators = {};
 
-  // Use the platform-aware PinStorage instance instead of SecureStorageService
-  final PinStorage _storageService = getPinStorage();
+  final SecureStorageService _storageService = SecureStorageService();
 
   Timer? _timer;
   int _secondsRemaining = 30;
@@ -31,28 +30,22 @@ class TotpProvider extends ChangeNotifier {
 
   Future<void> clearAllAccounts() async {
     _accounts.clear();
-    // Clear persistent storage here if applicable.
-    await _storageService.clearPin();  // clear the stored pin and data if needed
-
+    await _storageService.clearAllAccounts();
     notifyListeners();
   }
 
   Future<void> _loadAccounts() async {
     try {
-      final savedJson = await _storageService.readPin();
-      if (savedJson != null) {
-        // Assuming you store accounts as JSON string in the same pin storage
-        final savedAccounts = TotpAccount.listFromJson(savedJson);
-        _accounts.addAll(savedAccounts);
+      final savedAccounts = await _storageService.loadAccounts();
+      _accounts.addAll(savedAccounts);
 
-        for (var account in savedAccounts) {
-          final decodedKey = base32Decode(account.secret);
-          _generators[account.secret] = TOTPGenerator(secretKey: decodedKey);
-          _updateCodeFor(account);
-        }
+      for (var account in savedAccounts) {
+        final decodedKey = base32Decode(account.secret);
+        _generators[account.secret] = TOTPGenerator(secretKey: decodedKey);
+        _updateCodeFor(account);
       }
     } catch (e) {
-      // handle error or no stored accounts gracefully
+      // handle error gracefully
     }
     notifyListeners();
   }
@@ -60,7 +53,7 @@ class TotpProvider extends ChangeNotifier {
   void addAccount(TotpAccount account) {
     if (_accounts.any((a) =>
         a.issuer == account.issuer && a.accountName == account.accountName)) {
-      return; // prevent duplicates
+      return;
     }
 
     _accounts.add(account);
@@ -82,9 +75,7 @@ class TotpProvider extends ChangeNotifier {
   }
 
   Future<void> _saveAccounts() async {
-    // Serialize accounts list as JSON string
-    final jsonString = TotpAccount.listToJson(_accounts);
-    await _storageService.writePin(jsonString);
+    await _storageService.saveAccounts(_accounts);
   }
 
   void _startTimer() {
